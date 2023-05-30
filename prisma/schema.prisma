@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Shop {
+  id               Int       @id @default(autoincrement())
+  shop_name        String
+  shop_url         String
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+  // membership_level Member?   @default(GUEST)
+  users            User[]
+  Session          Session[]
+}
+
+model Session {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  expires_at DateTime
+  shop_id    Int
+  shop       Shop     @relation(fields: [shop_id], references: [id])
+
+  @@index([shop_id])
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  firstname   String
+  lastname    String
+  email       String   @unique
+  password    String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  // access_token     String?
+  // access_scopes    String?
+  shop_id     Int?
+  shop        Shop?    @relation(fields: [shop_id], references: [id])
+
+  @@index([shop_id])
+}
+
+// enum Member {
+//   GUEST
+//   ADMIN
+// }

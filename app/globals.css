@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  @apply min-h-screen;
+}
+body {
+  @apply flex flex-col;
+}
+div#__next {
+  @apply h-full;
+}
+main {
+  @apply h-full;
+}
